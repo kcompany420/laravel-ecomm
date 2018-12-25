@@ -48,16 +48,36 @@ class CategoryController extends Controller
         ]);
 
         $categories = Category::create($request->only('title','description','slug'));
-        $categories->childerns()->attach($request->parent_id);
+        $categories->childrens()->attach($request->parent_id);
         return back()->with('message','Category Added Successfully !!!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
+
+    public function trash()
+    {
+        $categories = Category::onlyTrashed()->paginate(3);
+        return view('admin.categories.index',compact('categories'));
+    }
+
+    public function recoverCat($id)
+    {
+        $category = Category::onlyTrashed()->findOrFail($id);
+        if($category->restore())
+            return back()->with('message','Category Successfully Restored!');
+        else
+            return back()->with('message','Error Restoring Category');
+    }
+
+
+    public function remove(Category $category){
+        if($category->delete()){
+                 return back()->with('message','Category Successfully Trashed!');
+        }else{
+            return back()->with('message','Error Deleting Record');
+        }
+    }
+
+   
     public function show(Category $category)
     {
         //

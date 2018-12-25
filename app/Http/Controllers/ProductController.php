@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Product;
+use App\Category;
+// use App\CategoryParent;
+
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -27,6 +30,9 @@ class ProductController extends Controller
     public function create()
     {
         //
+        $categories = Category::with('childrens')->get();
+
+        return view('admin.product.create',compact('categories'));
     }
 
     /**

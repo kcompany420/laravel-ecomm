@@ -25,17 +25,33 @@
                   Orders
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link @if(request()->url() == route('admin.product.index')) {{'active'}}  @endif" href="{{route('admin.product.index')}}">
+              <li class="nav-item dropdown">
+                <a id="productDropdown" class="nav-link @if(request()->url() == route('admin.product.index')) {{'active'}}  @endif dropdown-toggle" href="javascipt:;" role="button" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">
                   <span data-feather="shopping-cart"></span>
                   Products
                 </a>
+            
+                <div class="dropdown-menu" aria-labelledby="productDropdown">
+                  <a href="{{route('admin.product.create')}}" class="dropdown-item">Add Product</a>
+                 {{--  <a href="{{route('admin.product.index')}}" class="dropdown-item">All Product</a>
+                  <a href="{{route('admin.product.trash')}}" class="dropdown-item">Trashed Product</a> --}}
+
+                </div>
+
               </li>
-              <li class="nav-item">
-                <a class="nav-link @if(request()->url() == route('admin.category.index')) {{'active'}}  @endif" href="{{route('admin.category.index')}}">
+              <li class="nav-item dropdown">
+                <a id="categoryDropdown" class="nav-link @if(request()->url() == route('admin.category.index')) {{'active'}}  @endif dropdown-toggle" href="javascript:;" role="button" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">
                   <span data-feather="bar-chart-2"></span>
-                  Category
+                  Categories
                 </a>
+                  
+                  <div class="dropdown-menu" aria-labelledby="categoryDropdown">
+                    <a class="dropdown-item" href="{{route('admin.category.create')}}">Add Category</a>
+                    <a class="dropdown-item" href="{{route('admin.category.index')}}">All Categories</a>
+                    <a class="dropdown-item" href="{{route('admin.category.trash')}}">Trashed Categories</a>
+
+                  </div>
+                
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">

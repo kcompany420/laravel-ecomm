@@ -19,13 +19,16 @@
 			@if(isset($category))
 				@method('PUT')
 			@endif
-						@include('admin.partials.error')
+			
+			@include('admin.partials.error')
   
 			  <div class="form-group">
 			    <label for="exampleInputEmail1">Title:</label>
 			    <input type="text" class="form-control" value="{{@$category->title}}" id="txturl" name="title" aria-describedby="emailHelp" placeholder="Enter Category">
+
 			    <small id="emailHelp" class="form-text text-muted">{{config('app.url')}}<span id="url">{{@$category->slug}}</span></small>
-			    <input type="hidden" name="slug" id="slug" value="{{$category->slug}}">
+
+			    <input type="hidden" name="slug" id="slug" value="{{@$category->slug}}">
 			  </div>
 			   <div class="form-group">
    				 <label for="exampleFormControlTextarea1">Description:</label>

@@ -32,37 +32,57 @@
     </tr>
   </thead>
   <tbody>
-  	@if ($categories)
-  		@foreach($categories as $category)
-    <tr>
-      <th scope="row">{{$category->id}}</th>
-      <td>{{$category->title}}</td>
-      <td>{!! $category->description !!}</td>
-      <td>{{$category->slug}}</td>
-      <td>
-      	@if($category->childerns->count() > 0)
-      		@foreach($category->childerns as $childcategory)
-      		{{$childcategory->title}},
-      		@endforeach
-      	@else
-      	<strong>{{"Parent Category"}}</strong>
-      	@endif
-      </td>
+  	
+
+     @if($categories->count() > 0)
+        @foreach($categories as $category)
+      <tr>
+        <td>{{$category->id}}</td>
+        <td>{{$category->title}}</td>
+        <td>{!! $category->description !!}</td>
+        <td>{{$category->slug}}</td>
+        <td>
+
+          @if($category->childrens()->count() > 0)
+            @foreach($category->childrens as $children)
+            {{$children->title}},
+            @endforeach
+            @else
+            <strong>{{"Parent Category"}}</strong>
+          @endif
+
+        </td>
+
+        @if($category->trashed())
+
+          <td>{{$category->deleted_at}}</td>
+            <td><a class="btn btn-info btn-sm" href="{{route('admin.category.recover',$category->id)}}">Restore</a> | <a class="btn btn-danger btn-sm" href="javascript:;"  onclick="confirmDelete('{{$category->id}}')">Delete</a>
+            <form id="delete-category-{{$category->id}}" action="{{ route('admin.category.destroy', $category->slug) }}" method="POST" style="display: none;">
+              
+              @method('DELETE')
+              @csrf
+            </form>
+        </td>
+
+      @else
+      
       <td>{{$category->created_at}}</td>
-      <td><a href="{{route('admin.category.edit',$category->id)}}" class="btn btn-warning btn-sm">Edit</a> | <a href="javascript:;" onclick="confirmDelete('{{$category->id}}')" id="confirmdelete" class="btn btn-danger btn-sm">Delete</a>
-      <form id="delete-category-{{$category->id}}" action="{{route('admin.category.destroy',$category->id)}}" method="POST">
-        
-        @csrf
-        @method('DELETE')
-      </form>
-      </td>
-    </tr>
-    @endforeach
-    	@else
-    	<tr>
-    		<td colspan="5">Not Categories Found !!!</td>
-    	</tr>
+      <td>
+          <a class="btn btn-info btn-sm" href="{{route('admin.category.edit',$category->slug)}}">Edit</a> | <a id="trash-category-{{$category->id}}" class="btn btn-warning btn-sm" href="{{route('admin.category.remove',$category->slug)}}">Trash</a> | <a class="btn btn-danger btn-sm" href="javascript:;" onclick="confirmDelete('{{$category->id}}')">Delete</a>
+             <form id="delete-category-{{$category->id}}" action="{{ route('admin.category.destroy', $category->slug) }}" method="POST" style="display: none;">
+          
+          @method('DELETE')
+          @csrf
+        </form>
+    </td>
     @endif
+  </tr>
+  @endforeach
+  @else
+  <tr>
+    <td colspan="7" class="alert alert-info">No Categories Found..</td>
+  </tr>
+  @endif
 
 
   </tbody>
